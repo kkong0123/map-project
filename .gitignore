@@ -130,3 +130,5 @@ dmypy.json
 
 # Except
 *.ipynb
+*.xlsx
+*.html
