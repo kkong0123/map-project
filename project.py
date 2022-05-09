@@ -8,9 +8,9 @@
 #       format_version: '1.5'
 #       jupytext_version: 1.13.8
 #   kernelspec:
-#     display_name: python-env
+#     display_name: python-venv
 #     language: python
-#     name: python-env
+#     name: python-venv
 # ---
 
 import requests
@@ -23,17 +23,19 @@ import pandas as pd
 import os
 
 # +
-# 2. Excel 파일 불러오기
+# xlsx으로 열 때
+# Excel 파일 불러오기
 current_path = os.path.dirname('__file__') # 현재 파일의 위치 반환
 df = pd.read_excel(os.path.join(current_path, "2호차.xlsx")) # images 폴더 위치 반환
 
-# 3. excel 의 값을 list 로 변환
+# excel 의 값을 list 로 변환
 
 data = df.values.tolist()
 
 # +
+# csv로 열 때
 # data = list()
-# f = open("//Users//kkong0123//Desktop//python_program//project//경기도평택시.csv",'r',encoding='cp949')
+# f = open("//Users//kkong0123//Desktop//python_program//project//이름.csv",'r',encoding='cp949')
 # rea = csv.reader(f)
 # for row in rea:
 #     data.append(row)
