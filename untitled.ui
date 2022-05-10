@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>434</width>
     <height>300</height>
    </rect>
   </property>
@@ -16,18 +16,18 @@
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>371</width>
-     <height>192</height>
+     <x>20</x>
+     <y>30</y>
+     <width>251</width>
+     <height>241</height>
     </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>210</y>
+     <x>270</x>
+     <y>40</y>
      <width>161</width>
      <height>32</height>
     </rect>
@@ -39,14 +39,27 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>210</y>
-     <width>113</width>
+     <x>272</x>
+     <y>180</y>
+     <width>161</width>
      <height>32</height>
     </rect>
    </property>
    <property name="text">
     <string>시작</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_3">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>80</y>
+     <width>161</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>저장위치 설정</string>
    </property>
   </widget>
  </widget>
