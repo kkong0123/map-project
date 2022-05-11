@@ -1,17 +1,3 @@
-# ---
-# jupyter:
-#   jupytext:
-#     formats: ipynb,py:light
-#     text_representation:
-#       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.13.8
-#   kernelspec:
-#     display_name: python-venv
-#     language: python
-#     name: python-venv
-# ---
 from dataclasses import replace
 from tkinter import Frame
 import requests
@@ -27,11 +13,8 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from webdriver_manager.chrome import ChromeDriverManager
-
-import webbrowser
+from pathlib import Path
 #UI파일 연결
-#단, UI파일은 Python 코드 파일과 같은 디렉토리에 위치해야한다.
-
 base_dir = os.path.dirname(os.path.abspath(__file__))
 form_class = uic.loadUiType(base_dir + "//untitled.ui")[0]
 
@@ -177,9 +160,7 @@ class WindowClass(QMainWindow, form_class) :
         # driver.close()
 
         m = folium.Map(location=[first_location[0], second_location[0]],
-                    zoom_start=17, 
-                    width=750, 
-                    height=500)
+                    zoom_start=17)
         plugins.Fullscreen(
         position='topright',
         title='Expand me',
@@ -206,22 +187,17 @@ class WindowClass(QMainWindow, form_class) :
         self.textBrowser.append("\n--지도 추출 완료--")
         self.textBrowser.append("\n전체 인원: {}\n누락된 인원:{}".format(len(adress), len(error_list)))
         self.textBrowser.append("\n[누락] 다음 인원의 주소를 다시 확인해주세요 : {}".format(error_list))
-        
-        with open('./korea.json', mode='rt', encoding='utf-8') as f:
-            geo = json.loads(f.read()) # json 파일 로드
-            f.close()
-
-        # geo를 seoul에 추가
-        folium.GeoJson(geo, name='seoul_municipalities').add_to(m)
         m
-        m.save(save_path + '//TEST_MAP.html')
+        m.save(save_path + '//{0}.html'.format(file_name))
 
     def button1Function(self) :
         print("엑셀 파일 가져오기")
         global fname
         global current_path
+        global file_name
         fname = QFileDialog.getOpenFileName(self)
         current_path = fname[0].replace('/','//')
+        file_name = Path(current_path).stem
 
     def button3Function(self):
         global save_path
