@@ -20,12 +20,15 @@ import csv
 from selenium import webdriver
 import time
 import folium
+from folium import plugins
 import pandas as pd
 import os
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
+from webdriver_manager.chrome import ChromeDriverManager
 
+import webbrowser
 #UI파일 연결
 #단, UI파일은 Python 코드 파일과 같은 디렉토리에 위치해야한다.
 
@@ -131,9 +134,13 @@ class WindowClass(QMainWindow, form_class) :
         # 옵션 생성
         options = webdriver.ChromeOptions()
         # 창 숨기는 옵션 추가
-        options.add_argument("headless")
-
-        driver = webdriver.Chrome('chromedriver',options=options)
+        # options.add_argument("headless")
+        if getattr(sys, 'frozen', False):
+            chromedriver_path = os.path.join(sys._MEIPASS, "chromedriver")
+            driver = webdriver.Chrome(chromedriver_path, options=options)
+        else:
+            driver = webdriver.Chrome('.//chromedriver',options=options)
+            
         url = 'https://address.dawul.co.kr/'
         driver.get(url)
         time.sleep(1)
@@ -152,7 +159,7 @@ class WindowClass(QMainWindow, form_class) :
 
             location = driver.find_element_by_css_selector("#insert_data_5").text
             location = location.split(',')
-            print(location)
+            print("{0}/{1} {2}".format(i+1, len(adress), location))
 
             location_1 = location[1]
             location_2 = location[0]
@@ -173,7 +180,15 @@ class WindowClass(QMainWindow, form_class) :
                     zoom_start=17, 
                     width=750, 
                     height=500)
+        plugins.Fullscreen(
+        position='topright',
+        title='Expand me',
+        title_cancel='Exit me',
+        force_separate_button=True
+        ).add_to(m)
+        plugins.LocateControl().add_to(m)
 
+        
         error_list = []
         for i in range(len(adress)):
             if first_location[i].isalpha() or second_location[i].isalpha() == True:
@@ -191,8 +206,13 @@ class WindowClass(QMainWindow, form_class) :
         self.textBrowser.append("\n--지도 추출 완료--")
         self.textBrowser.append("\n전체 인원: {}\n누락된 인원:{}".format(len(adress), len(error_list)))
         self.textBrowser.append("\n[누락] 다음 인원의 주소를 다시 확인해주세요 : {}".format(error_list))
+        
+        with open('./korea.json', mode='rt', encoding='utf-8') as f:
+            geo = json.loads(f.read()) # json 파일 로드
+            f.close()
 
-
+        # geo를 seoul에 추가
+        folium.GeoJson(geo, name='seoul_municipalities').add_to(m)
         m
         m.save(save_path + '//TEST_MAP.html')
 
@@ -216,8 +236,9 @@ class WindowClass(QMainWindow, form_class) :
         # Excel 파일 불러오기
             
 
-if __name__ == "__main__" :
+if __name__ == "__main__" :        
     app = QApplication(sys.argv)
     myWindow = WindowClass() 
     myWindow.show()
     app.exec_()
+    
