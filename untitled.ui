@@ -32,9 +32,9 @@
    <property name="geometry">
     <rect>
      <x>320</x>
-     <y>10</y>
-     <width>141</width>
-     <height>151</height>
+     <y>20</y>
+     <width>142</width>
+     <height>161</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -47,6 +47,18 @@
       </property>
       <property name="text">
        <string>엑셀 파일 가져오기</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="font">
+       <font>
+        <family>맑은 고딕 Semilight</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>CSV 파일 가져오기</string>
       </property>
      </widget>
     </item>
@@ -87,8 +99,8 @@
    </property>
    <property name="font">
     <font>
-     <family>맑은 고딕 Semilight</family>
-     <pointsize>8</pointsize>
+     <family>Lucida Grande</family>
+     <pointsize>9</pointsize>
     </font>
    </property>
    <property name="autoFillBackground">
