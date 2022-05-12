@@ -1,6 +1,4 @@
-from dataclasses import replace
 from tkinter import Frame
-import requests
 import json
 import csv
 from selenium import webdriver
@@ -12,8 +10,8 @@ import os
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
-from webdriver_manager.chrome import ChromeDriverManager
 from pathlib import Path
+
 #UI파일 연결
 base_dir = os.path.dirname(os.path.abspath(__file__))
 form_class = uic.loadUiType(base_dir + "//untitled.ui")[0]
@@ -26,36 +24,21 @@ class WindowClass(QMainWindow, form_class) :
 
         #버튼에 기능을 연결하는 코드
         self.pushButton.clicked.connect(self.button1Function)
-        self.pushButton.clicked.connect(self.button2Function)
+        self.pushButton.clicked.connect(self.print_first)
         self.pushButton_2.clicked.connect(self.main)
         self.pushButton_3.clicked.connect(self.button3Function)
+        self.pushButton_4.clicked.connect(self.button4Function)
+        self.pushButton_4.clicked.connect(self.print_first)
 
+        self.setWindowTitle('지도변환 v1.0.1-release')
 
-
-    # def log(self):
-    #     self.textBrowser.append(location_1)
-    #     WindowClass.main(self)
     def main(self):
-        # excel 의 값을 list 로 변환
-        df = pd.read_excel(current_path) # images 폴더 위치 반환
-        data = df.values.tolist()
 
-        # csv로 열 때
-        # data = list()
-        # f = open("//Users//kkong0123//Desktop//python_program//project//이름.csv",'r',encoding='cp949')
-        # rea = csv.reader(f)
-        # for row in rea:
-        #     data.append(row)
-        # f.close
-        # print(data)
-        
         # 주소 이름 ..이 있는 행을 찾기 (모든 엑셀 파일의 똑같은 행 위치에 주소, 이름 .. 이 위치하는 것이 아니기에 -> 유동적으로 )
         for idx, val in enumerate(data): 
             if '이름' in val:
                 meta_idx = idx
                 break
-        print(meta_idx)
-        print(data)
 
         if '이름' in data[meta_idx]:
             name_idx = data[meta_idx].index("이름") 
@@ -117,12 +100,12 @@ class WindowClass(QMainWindow, form_class) :
         # 옵션 생성
         options = webdriver.ChromeOptions()
         # 창 숨기는 옵션 추가
-        # options.add_argument("headless")
+        options.add_argument("headless")
         if getattr(sys, 'frozen', False):
-            chromedriver_path = os.path.join(sys._MEIPASS, "chromedriver")
+            chromedriver_path = os.path.join(sys._MEIPASS, "./chromedriver")
             driver = webdriver.Chrome(chromedriver_path, options=options)
         else:
-            driver = webdriver.Chrome('.//chromedriver',options=options)
+            driver = webdriver.Chrome('./chromedriver',options=options)
             
         url = 'https://address.dawul.co.kr/'
         driver.get(url)
@@ -181,7 +164,6 @@ class WindowClass(QMainWindow, form_class) :
                 popup = folium.Popup(iframe)
                 folium.Marker([first_location[i], second_location[i]], popup, tooltip = name[i]).add_to(m)
 
-            
         print("전체 인원: {}\n누락된 인원:{}".format(len(adress), len(error_list)))
         print("[누락] 다음 인원의 주소를 다시 확인해주세요 : {}".format(error_list))
         self.textBrowser.append("\n--지도 추출 완료--")
@@ -190,14 +172,36 @@ class WindowClass(QMainWindow, form_class) :
         m
         m.save(save_path + '//{0}.html'.format(file_name))
 
-    def button1Function(self) :
-        print("엑셀 파일 가져오기")
+    def button1Function(self) : # 엑셀로 열 때 함수
+        print("엑셀 파일 가져옴")
         global fname
         global current_path
         global file_name
+        global data
         fname = QFileDialog.getOpenFileName(self)
         current_path = fname[0].replace('/','//')
         file_name = Path(current_path).stem
+        # excel 의 값을 list 로 변환
+        df = pd.read_excel(current_path) 
+        data = df.values.tolist() # 엑셀 내용 (1번째 행은 안 가져옴)
+        data.insert(0, df.columns.tolist()) # 엑셀의 필드 값(1번째 줄) 가져와서 data 리스트의 0번째 인덱스에 추가 
+        print(data)
+
+    def button4Function(self): # csv로 열 때 함수
+        global fname
+        global file_name
+        global data
+        fname = QFileDialog.getOpenFileName(self)
+        current_path = fname[0].replace('/','//')
+        file_name = Path(current_path).stem
+        print("CSV 파일 가져옴")
+        data = list()
+        f = open(current_path,'r',encoding='cp949')
+        rea = csv.reader(f)
+        for row in rea:
+            data.append(row)
+        f.close
+        print(data)
 
     def button3Function(self):
         global save_path
@@ -205,13 +209,10 @@ class WindowClass(QMainWindow, form_class) :
         save_path = save.replace('/','//')
         self.textBrowser.append("저장위치\n{}".format(save))
 
-    def button2Function(self):
+    def print_first(self):
         self.textBrowser.setPlainText("엑셀파일을 가져왔습니다.\n {}\n".format(fname[0]))
         print("start")
-        # xlsx으로 열 때
-        # Excel 파일 불러오기
-            
-
+ 
 if __name__ == "__main__" :        
     app = QApplication(sys.argv)
     myWindow = WindowClass() 
