@@ -1,4 +1,3 @@
-from tkinter import Frame
 import json
 import csv
 from selenium import webdriver
@@ -34,7 +33,7 @@ class WindowClass(QMainWindow, form_class) :
 
     def main(self):
 
-        # 주소 이름 ..이 있는 행을 찾기 (모든 엑셀 파일의 똑같은 행 위치에 주소, 이름 .. 이 위치하는 것이 아니기에 -> 유동적으로 )
+        # 이름, 주소, 전화번호 등이 있는 행 찾기 
         for idx, val in enumerate(data): 
             if '이름' in val:
                 meta_idx = idx
@@ -152,7 +151,6 @@ class WindowClass(QMainWindow, form_class) :
         ).add_to(m)
         plugins.LocateControl().add_to(m)
 
-        
         error_list = []
         for i in range(len(adress)):
             if first_location[i].isalpha() or second_location[i].isalpha() == True:
