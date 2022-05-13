@@ -10,7 +10,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from pathlib import Path
-
+import webbrowser
 #UI파일 연결
 base_dir = os.path.dirname(os.path.abspath(__file__))
 form_class = uic.loadUiType(base_dir + "//untitled.ui")[0]
@@ -28,6 +28,8 @@ class WindowClass(QMainWindow, form_class) :
         self.pushButton_3.clicked.connect(self.button3Function)
         self.pushButton_4.clicked.connect(self.button4Function)
         self.pushButton_4.clicked.connect(self.print_first)
+        self.pushButton_5.clicked.connect(self.server)
+
 
         self.setWindowTitle('지도변환 v1.0.1-release')
 
@@ -210,6 +212,9 @@ class WindowClass(QMainWindow, form_class) :
     def print_first(self):
         self.textBrowser.setPlainText("엑셀파일을 가져왔습니다.\n {}\n".format(fname[0]))
         print("start")
+
+    def server(self):
+        webbrowser.open("https://app.netlify.com/login/email")
  
 if __name__ == "__main__" :        
     app = QApplication(sys.argv)

@@ -34,7 +34,7 @@
      <x>320</x>
      <y>20</y>
      <width>142</width>
-     <height>161</height>
+     <height>211</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -83,6 +83,13 @@
       </property>
       <property name="text">
        <string>시작</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="text">
+       <string>서버에 저장하기</string>
       </property>
      </widget>
     </item>
