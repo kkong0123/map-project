@@ -28,13 +28,35 @@
     </font>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>280</y>
+     <width>351</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lucida Grande</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Copyright 2022. Sanghyeok Kong All rights reserved.</string>
+   </property>
+  </widget>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>320</x>
      <y>20</y>
      <width>142</width>
-     <height>211</height>
+     <height>221</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -56,6 +78,9 @@
        <font>
         <family>맑은 고딕 Semilight</family>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
       <property name="text">
        <string>CSV 파일 가져오기</string>
@@ -88,34 +113,17 @@
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_5">
+      <property name="font">
+       <font>
+        <family>맑은 고딕 Semilight</family>
+       </font>
+      </property>
       <property name="text">
-       <string>서버에 저장하기</string>
+       <string>서버에 저장</string>
       </property>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>280</y>
-     <width>351</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lucida Grande</family>
-     <pointsize>9</pointsize>
-    </font>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Copyright 2022. Sanghyeok Kong All rights reserved.</string>
-   </property>
   </widget>
  </widget>
  <resources/>
