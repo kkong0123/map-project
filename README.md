@@ -37,3 +37,13 @@ GUI 사용법
 <img width="481" alt="스크린샷 2022-05-12 오후 2 45 40" src="https://user-images.githubusercontent.com/104900966/168000387-f7d3b60e-6a17-47ad-915c-2351119deaec.png">
 
 위의 순서대로 진행하지 않을 시 오류가 발생합니다.
+
+결과물
+==
+
+파일명.html 파일로 지도가 저장 됩니다.
+
+현재 위치 불러오기 & 전체화면 기능 사용가능
+
+<img width="692" alt="스크린샷 2022-05-16 오후 12 37 12" src="https://user-images.githubusercontent.com/104900966/168515707-a04aa32b-8603-40d8-a9cb-51058a159f82.png">
+
