@@ -3,7 +3,7 @@ import csv
 from selenium import webdriver
 import time
 import folium
-from folium import plugins
+from folium import CustomIcon, plugins
 import pandas as pd
 import os
 import sys
@@ -30,7 +30,6 @@ class WindowClass(QMainWindow, form_class) :
         self.pushButton_4.clicked.connect(self.print_first)
         self.pushButton_5.clicked.connect(self.server)
 
-
         self.setWindowTitle('지도변환 v1.0.1-release')
 
     def main(self):
@@ -56,12 +55,19 @@ class WindowClass(QMainWindow, form_class) :
         if '전화번호' in data[meta_idx]:
             phone_idx = data[meta_idx].index("전화번호") 
 
+        if '호차' in data[meta_idx]:
+            num_idx = data[meta_idx].index("호차")
+
+        if '부모님 전화번호' in data[meta_idx]:
+            parent_num_idx = data[meta_idx].index("부모님 전화번호")
+
         name = []
         age = []
         gender = []
         adress = []
         phone = []
-
+        num = []
+        parent_phone = []
         try:
             for i in range(meta_idx + 1, len(data)):
                 name.append(data[i][name_idx]) 
@@ -97,7 +103,22 @@ class WindowClass(QMainWindow, form_class) :
             for i in range(meta_idx + 1, len(data)):
                 adress.append(' ')     
             pass
-
+        try:    
+            for i in range(meta_idx + 1, len(data)):
+                num.append(data[i][num_idx])
+        except Exception:
+            for i in range(meta_idx + 1, len(data)):
+                num.append(' ')     
+            pass
+        try:    
+            for i in range(meta_idx + 1, len(data)):
+                parent_phone.append(data[i][parent_num_idx])
+        except Exception:
+            for i in range(meta_idx + 1, len(data)):
+                parent_phone.append(' ')     
+            pass
+        
+        print(num)
         # 옵션 생성
         options = webdriver.ChromeOptions()
         # 창 숨기는 옵션 추가
@@ -155,14 +176,29 @@ class WindowClass(QMainWindow, form_class) :
 
         error_list = []
         for i in range(len(adress)):
+            for j in range(1,26):
+                if num[i] ==  str(j) + '호차':
+                    image_icon = ".//image//{}.png".format(j)
+                    icon1 = CustomIcon(
+                        image_icon,
+                        icon_size=(35, 35)
+                    )
+                    break
+                else:
+                    icon1 =folium.Icon('red', icon='star')
+
             if first_location[i].isalpha() or second_location[i].isalpha() == True:
                 error_list.append(name[i])
                 
             else:
-                popup = str(name[i])+'<br/>' + str(age[i]) + str(gender[i]) + '<br/>' + str(adress[i]) + '<br/>' + str(phone[i])
+                popup = str(name[i])+'<br/>' + str(age[i]) + str(gender[i]) + '<br/>' + str(adress[i]) + '<br/>' + str(phone[i]) + '<br/>' + "부모님: " + str(parent_phone[i])
                 iframe = folium.IFrame(popup, width = 150, height=160)
                 popup = folium.Popup(iframe)
-                folium.Marker([first_location[i], second_location[i]], popup, tooltip = name[i]).add_to(m)
+                    
+
+                folium.Marker([first_location[i], second_location[i]], popup, icon = icon1, tooltip = name[i]).add_to(m)
+
+
 
         print("전체 인원: {}\n누락된 인원:{}".format(len(adress), len(error_list)))
         print("[누락] 다음 인원의 주소를 다시 확인해주세요 : {}".format(error_list))
@@ -203,7 +239,7 @@ class WindowClass(QMainWindow, form_class) :
         f.close
         print(data)
 
-    def button3Function(self):
+    def button3Function(self):  
         global save_path
         save = QFileDialog.getExistingDirectory(self)
         save_path = save.replace('/','//')
@@ -215,7 +251,8 @@ class WindowClass(QMainWindow, form_class) :
 
     def server(self):
         webbrowser.open("https://app.netlify.com/login/email")
- 
+        # 크롤링 막아둔듯 
+        
 if __name__ == "__main__" :        
     app = QApplication(sys.argv)
     myWindow = WindowClass() 
