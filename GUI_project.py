@@ -1,6 +1,7 @@
 import json
 import csv
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 import time
 import folium
 from folium import CustomIcon, plugins
@@ -30,7 +31,7 @@ class WindowClass(QMainWindow, form_class) :
         self.pushButton_4.clicked.connect(self.print_first)
         self.pushButton_5.clicked.connect(self.server)
 
-        self.setWindowTitle('지도변환 v1.0.1-release')
+        self.setWindowTitle('지도변환 v1.0.2-release')
 
     def main(self):
 
@@ -105,7 +106,7 @@ class WindowClass(QMainWindow, form_class) :
             pass
         try:    
             for i in range(meta_idx + 1, len(data)):
-                num.append(data[i][num_idx])
+                num.append(data[i][num_idx].replace(" ", ""))
         except Exception:
             for i in range(meta_idx + 1, len(data)):
                 num.append(' ')     
@@ -123,11 +124,9 @@ class WindowClass(QMainWindow, form_class) :
         options = webdriver.ChromeOptions()
         # 창 숨기는 옵션 추가
         options.add_argument("headless")
-        if getattr(sys, 'frozen', False):
-            chromedriver_path = os.path.join(sys._MEIPASS, "./chromedriver")
-            driver = webdriver.Chrome(chromedriver_path, options=options)
-        else:
-            driver = webdriver.Chrome('./chromedriver',options=options)
+ 
+       
+        driver = webdriver.Chrome()
             
         url = 'https://address.dawul.co.kr/'
         driver.get(url)
@@ -140,12 +139,12 @@ class WindowClass(QMainWindow, form_class) :
         second_location = [] # 경도 값 리스트
 
         for i in range(len(adress)):
-            driver.find_element_by_css_selector("#input_juso").click()
-            driver.find_element_by_css_selector("#input_juso").send_keys(adress[i])
-            driver.find_element_by_css_selector("#btnSch").click()
+            driver.find_element(By.CSS_SELECTOR, "#input_juso").click()
+            driver.find_element(By.CSS_SELECTOR, "#input_juso").send_keys(adress[i])
+            driver.find_element(By.CSS_SELECTOR, "#btnSch").click()
             time.sleep(1)
 
-            location = driver.find_element_by_css_selector("#insert_data_5").text
+            location = driver.find_element(By.CSS_SELECTOR, "#insert_data_5").text
             location = location.split(',')
             print("{0}/{1} {2}".format(i+1, len(adress), location))
 
@@ -177,6 +176,7 @@ class WindowClass(QMainWindow, form_class) :
         error_list = []
         for i in range(len(adress)):
             for j in range(1,26):
+                print(name[i] + ": " + num[i])
                 if num[i] ==  str(j) + '호차':
                     image_icon = ".//image//{}.png".format(j)
                     icon1 = CustomIcon(
@@ -191,7 +191,7 @@ class WindowClass(QMainWindow, form_class) :
                 error_list.append(name[i])
                 
             else:
-                popup = str(name[i])+'<br/>' + str(age[i]) + str(gender[i]) + '<br/>' + str(adress[i]) + '<br/>' + str(phone[i]) + '<br/>' + "부모님: " + str(parent_phone[i])
+                popup = str(name[i])+'<br>' + str(age[i]) + str(gender[i]) + '<br>' + str(adress[i]) + '<br>' + str(phone[i]) + '<br>' + "부모님: " + str(parent_phone[i])
                 iframe = folium.IFrame(popup, width = 150, height=160)
                 popup = folium.Popup(iframe)
                     
