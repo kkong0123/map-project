@@ -1,8 +1,12 @@
 # 엑셀 데이터를 활용한 지도 마킹 프로그램
 
+**Skills**
+
+<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/pyqt-41CD52?style=for-the-badge&logo=pyqt&logoColor=white"> <img src="https://img.shields.io/badge/selenium-43B02A?style=for-the-badge&logo=selenium&logoColor=white"> <img src="https://img.shields.io/badge/folium-77B829?style=for-the-badge&logo=folium&logoColor=white"> <img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white">
+
+본 프로그램은 엑셀 또는 csv 파일에 담겨있는 정보를 가져와 주소를 추출하여 지도에 정보를 표시해 주는 프로그램입니다.
 
 ## 프로젝트 목적
-본 프로그램은 엑셀 또는 csv 파일에 담겨있는 정보를 가져와 주소를 추출하여 지도에 정보를 표시해 주는 프로그램입니다.
 
 학원 버스를 운영하시는 분께서 학생들의 픽업 위치를 한눈에 볼 수 있는 프로그램이 있으면 좋겠다고 말씀을 하셨습니다. 그래서 엑셀 파일 내 주소 정보를 활용하여 지도에 마커를 표시하는 프로그램을 개발해 봤습니다.
 
