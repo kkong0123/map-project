@@ -111,18 +111,6 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="font">
-       <font>
-        <family>맑은 고딕 Semilight</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>서버에 저장</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
  </widget>
