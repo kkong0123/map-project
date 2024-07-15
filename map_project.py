@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 import folium
 from folium import CustomIcon, plugins
+from collections import defaultdict
 
 # UI파일 연결
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -123,29 +124,46 @@ class WindowClass(QMainWindow, form_class):
         plugins.LocateControl().add_to(m)
 
         error_list = []
+        
+        # 위치별 데이터 그룹화
+        location_dict = defaultdict(list)
         for i in range(len(address)):
-            icon1 = self.get_icon(num[i])
-            if first_location[i].isalpha() or second_location[i].isalpha():
-                error_list.append(name[i])
+            location_key = (first_location[i], second_location[i])
+            location_dict[location_key].append({
+                'name': name[i],
+                'age': age[i],
+                'gender': gender[i],
+                'address': address[i],
+                'phone': phone[i],
+                'num': num[i],
+                'parent_phone': parent_phone[i]
+            })
+        
+        for location_key, people in location_dict.items():
+            if location_key[0].isalpha() or location_key[1].isalpha():
+                for person in people:
+                    error_list.append(person['name'])
             else:
                 popup_content = ""
-                if name[i]:
-                    popup_content += f"{name[i]}"
-                    if gender[i]:
-                        popup_content += f"({gender[i]})"
-                    popup_content += "<br>"
-                if age[i]:
-                    popup_content += f"나이: {age[i]}<br>"
-                if phone[i]:
-                    popup_content += f"학생: {phone[i]}<br>"
-                if parent_phone[i]:
-                    popup_content += f"부모님: {parent_phone[i]}<br>"
-                if address[i]:
-                    popup_content += f"<b>{address[i]}</b>"
+                for person in people:
+                    if person['name']:
+                        popup_content += f"{person['name']}"
+                        if person['gender']:
+                            popup_content += f"({person['gender']})"
+                        popup_content += "<br>"
+                    if person['age']:
+                        popup_content += f"나이: {person['age']}<br>"
+                    if person['phone']:
+                        popup_content += f"학생: {person['phone']}<br>"
+                    if person['parent_phone']:
+                        popup_content += f"부모님: {person['parent_phone']}<br>"
+                    if person['address']:
+                        popup_content += f"<b>{person['address']}</b><br><br>"
 
-                iframe = folium.IFrame(popup_content, width=250, height=120)
+                iframe = folium.IFrame(popup_content, width=250, height=150)
                 popup = folium.Popup(iframe)
-                folium.Marker([first_location[i], second_location[i]], popup, icon=icon1, tooltip=name[i]).add_to(m)
+                icon = self.get_icon(people[0]['num'])  
+                folium.Marker([location_key[0], location_key[1]], popup=popup, icon=icon, tooltip=", ".join([p['name'] for p in people])).add_to(m)
 
         self.display_results(len(address), len(error_list), error_list)
         m.save(self.save_path + f'/{self.file_name}.html')
